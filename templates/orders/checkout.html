@@ -1,0 +1,28 @@
+{% include 'header.html' %}
+
+<h2 style="text-align:center; margin-top: 40px;">📦 إتمام الطلب</h2>
+
+<form method="post" style="max-width: 600px; margin: 40px auto; background: #f9f9f9; padding: 30px; border-radius: 10px;">
+  {% csrf_token %}
+  
+  <label>الاسم الكامل:</label>
+  <input type="text" name="name" required style="width:100%; margin-bottom:15px; padding:10px;">
+
+  <label>العنوان:</label>
+  <textarea name="address" required style="width:100%; margin-bottom:15px; padding:10px;"></textarea>
+
+  <label>رقم الجوال أو البريد:</label>
+  <input type="text" name="contact" required style="width:100%; margin-bottom:15px; padding:10px;">
+
+  <label>طريقة الدفع:</label>
+  <select name="payment_method" required style="width:100%; margin-bottom:20px; padding:10px;">
+    <option value="bank">تحويل بنكي</option>
+    <option value="cod">الدفع عند الاستلام</option>
+  </select>
+
+  <button type="submit" style="background: #28a745; color: white; padding: 12px 24px; border: none; border-radius: 5px; font-size: 1rem; cursor: pointer;">
+    📤 تأكيد الطلب
+  </button>
+</form>
+
+{% include 'footer.html' %}

@@ -1,0 +1,35 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Brü Box | متجر القهوة</title>
+  <link rel="stylesheet" href="{% static 'styles.css' %}">
+  <style>
+    body {
+      margin: 0;
+      font-family: 'Cairo', sans-serif;
+      background-color: #ffffff;
+      color: #111;
+    }
+  </style>
+</head>
+<body>
+
+  <!-- ✅ الشريط العلوي -->
+  {% include 'header.html' %}
+
+  <!-- ✅ المحتوى -->
+  <main style="min-height: 70vh;">
+    {% block content %}
+    <!-- محتوى الصفحات سيظهر هنا -->
+    {% endblock %}
+  </main>
+
+  <!-- ✅ الشريط السفلي -->
+  {% include 'footer.html' %}
+
+
+</body>
+</html>

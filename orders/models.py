@@ -3,21 +3,21 @@ from django.contrib.auth.models import User
 from products.models import Product
 
 class Order(models.Model):
-    user = models.ForeignKey(User, verbose_name="المستخدم", on_delete=models.CASCADE)
-    created_at = models.DateTimeField("تاريخ الطلب", auto_now_add=True)
-    is_paid = models.BooleanField("تم الدفع", default=False)
+    user = models.ForeignKey(User, on_delete=models.CASCADE, verbose_name="المستخدم")
+    created_at = models.DateTimeField(auto_now_add=True, verbose_name="تاريخ الإنشاء")
+    is_paid = models.BooleanField(default=False, verbose_name="تم الدفع")
 
     class Meta:
         verbose_name = "طلب"
         verbose_name_plural = "الطلبات"
 
     def __str__(self):
-        return f"طلب #{self.id} - {self.user.username}"
+        return f"طلب رقم {self.id} للمستخدم {self.user.username}"
 
 class OrderItem(models.Model):
-    order = models.ForeignKey(Order, verbose_name="الطلب", related_name='items', on_delete=models.CASCADE)
-    product = models.ForeignKey(Product, verbose_name="المنتج", on_delete=models.CASCADE)
-    quantity = models.PositiveIntegerField("الكمية", default=1)
+    order = models.ForeignKey(Order, on_delete=models.CASCADE, related_name='items', verbose_name="الطلب")
+    product = models.ForeignKey(Product, on_delete=models.CASCADE, verbose_name="المنتج")
+    quantity = models.PositiveIntegerField(default=1, verbose_name="الكمية")
 
     class Meta:
         verbose_name = "عنصر طلب"

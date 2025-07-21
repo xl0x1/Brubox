@@ -1,0 +1,45 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block content %}
+  <h2 style="text-align: center; margin-top: 40px;">🛒 سلة التسوق</h2>
+
+  {% if products %}
+    <ul style="list-style: none; padding: 0; max-width: 1000px; margin: 40px auto;">
+      {% for product in products %}
+        <li style="margin-bottom: 30px; background: #f0f0f0; color: #333; padding: 20px; border-radius: 10px; display: flex; gap: 20px; align-items: center; box-shadow: 0 2px 8px rgba(0,0,0,0.1);">
+
+          <!-- ✅ صورة المنتج -->
+          <img src="{{ product.image.url }}" alt="{{ product.name }}" style="width: 120px; height: 120px; object-fit: cover; border-radius: 10px;">
+
+          <div style="flex-grow: 1;">
+            <h3 style="margin: 0 0 10px;">{{ product.name }}</h3>
+            <p style="margin: 0; color: #555;">السعر: {{ product.price }} ر.س</p>
+          </div>
+
+          <!-- زر الحذف -->
+          <form method="post" action="{% url 'remove_from_cart' %}">
+            {% csrf_token %}
+            <input type="hidden" name="product_id" value="{{ product.id }}">
+            <button type="submit" style="background: #cc0000; color: white; border: none; padding: 10px 20px; border-radius: 6px; cursor: pointer;">
+              ❌ حذف
+            </button>
+          </form>
+        </li>
+      {% endfor %}
+    </ul>
+
+    <!-- ✅ الإجمالي -->
+    <h3 style="text-align: center; color: #222;">💵 المجموع الكلي: {{ total|floatformat:2 }} ر.س</h3>
+
+    <!-- زر الانتقال للدفع -->
+    <div style="text-align: center; margin-top: 30px;">
+        <a href="{% url 'checkout_view' %}"style="background-color: #0066cc; color: white; padding: 12px 24px; border-radius: 8px; text-decoration: none; font-size: 1rem;">
+        ✅ الانتقال إلى الدفع
+      </a>
+    </div>
+
+  {% else %}
+    <p style="text-align: center; font-size: 1.2rem; margin-top: 60px;">السلة فارغة حالياً 🛒</p>
+  {% endif %}
+{% endblock %}

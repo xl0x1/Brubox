@@ -1,0 +1,90 @@
+{% load static %}
+
+<header style="background-color: #111; color: white; font-family: 'Cairo', sans-serif; position: sticky; top: 0; z-index: 999;">
+  <div style="display: flex; justify-content: space-between; align-items: center; padding: 15px 30px; flex-wrap: wrap;">
+    
+    <!-- ✅ روابط الأقسام -->
+    <nav style="display: flex; gap: 30px; font-size: 1rem; flex-wrap: wrap;">
+      <a href="/" style="color: white; text-decoration: none;">الرئيسية</a>
+      <a href="/#محاصيل" style="color: white; text-decoration: none;">المحاصيل</a>
+      <a href="/products/" style="color: white; text-decoration: none;">أدوات القهوة المقطرة</a>
+      <a href="#" style="color: white; text-decoration: none;">بطاقة الإهداء</a>
+      <a href="#" style="color: white; text-decoration: none;">الإكسسوارات</a>
+    </nav>
+
+    <!-- ✅ الشعار -->
+    <div style="font-weight: bold; font-size: 1.3rem;">
+      Brü Box ☕
+    </div>
+
+    <!-- ✅ أيقونات الحساب والبحث والسلة -->
+    <div style="display: flex; gap: 15px; align-items: center;">
+      
+      <!-- الحساب -->
+      <div class="user-dropdown" style="position: relative;">
+        <div style="cursor: pointer;" onclick="toggleDropdown()">
+          <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="none" stroke="white" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <circle cx="12" cy="8" r="4"/>
+            <path d="M6 20c0-3.3 2.7-6 6-6s6 2.7 6 6"/>
+          </svg>
+        </div>
+        <div id="userDropdown" style="
+          display: none;
+          position: absolute;
+          top: 36px;
+          right: 0;
+          background-color: #222;
+          padding: 10px;
+          border-radius: 6px;
+          width: 160px;
+          box-shadow: 0 4px 10px rgba(0, 0, 0, 0.3);
+          z-index: 1000;
+        ">
+          <a href="/accounts/login/" style="display: block; color: white; padding: 8px 12px; text-decoration: none; border-bottom: 1px solid #444;">تسجيل الدخول</a>
+          <a href="/accounts/signup/" style="display: block; color: white; padding: 8px 12px; text-decoration: none;">إنشاء حساب</a>
+        </div>
+      </div>
+
+      <!-- البحث -->
+      <a href="#" title="بحث">
+        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="none" stroke="white" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+          <circle cx="11" cy="11" r="8"/>
+          <line x1="21" y1="21" x2="16.65" y2="16.65"/>
+        </svg>
+      </a>
+
+      <!-- السلة -->
+      <a href="/cart/" title="السلة" style="position: relative;">
+        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="none" stroke="white" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+          <path d="M6 2l1.5 4h9L18 2"/>
+          <path d="M3 6h18l-1.35 9.45a2 2 0 01-2 1.55H6.35a2 2 0 01-2-1.55L3 6z"/>
+          <path d="M16 10a4 4 0 01-8 0"/>
+        </svg>
+        <span style="position: absolute; top: -6px; right: -6px; background-color: #4682B4; border-radius: 50%; width: 10px; height: 10px;"></span>
+      </a>
+
+    </div>
+  </div>
+
+  <!-- ✅ شريط العروض -->
+  <div style="background-color: #333; color: white; white-space: nowrap; overflow: hidden;">
+    <marquee direction="right" scrollamount="4" style="padding: 8px 0;">
+      🚧 الموقع تحت الصيانة حاليًا 🚧 الموقع تحت الصيانة حاليًا 🚧 الموقع تحت الصيانة حاليًا
+    </marquee>
+  </div>
+</header>
+
+<!-- ✅ JavaScript لإظهار/إخفاء القائمة -->
+<script>
+  function toggleDropdown() {
+    const dropdown = document.getElementById('userDropdown');
+    dropdown.style.display = dropdown.style.display === 'block' ? 'none' : 'block';
+  }
+
+  window.addEventListener('click', function(event) {
+    const dropdown = document.getElementById('userDropdown');
+    if (!event.target.closest('.user-dropdown')) {
+      dropdown.style.display = 'none';
+    }
+  });
+</script>

@@ -1,5 +1,6 @@
 from django.urls import path
+from . import views
 
 urlpatterns = [
-    # المسارات الخاصة بالمنتجات ستُضاف لاحقًا
+    path('', views.products_list, name='products_list'),
 ]

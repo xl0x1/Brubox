@@ -1,0 +1,127 @@
+{% load static %}
+{% include 'header.html' %}
+
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+  <meta charset="UTF-8">
+  <title>منتجاتنا</title>
+  <style>
+    body {
+      margin: 0;
+      font-family: 'Arial', sans-serif;
+      background-color: #f3f3f3;
+      color: #222;
+    }
+
+    h2 {
+      color: #222;
+      text-align: center;
+      margin: 50px 0 30px;
+      font-size: 2rem;
+    }
+
+    .products-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+      gap: 40px 20px;
+      max-width: 1300px;
+      margin: auto;
+      padding: 0 20px 80px;
+    }
+
+    .product-card {
+      background-color: #fff;
+      border-radius: 0;
+      text-align: center;
+      padding: 0;
+      transition: transform 0.3s ease;
+      box-shadow: 0 4px 10px rgba(0,0,0,0.05);
+    }
+
+    .product-card:hover {
+      transform: translateY(-5px);
+    }
+
+    .product-card img {
+      width: 100%;
+      height: auto;
+      display: block;
+      object-fit: contain;
+      background-color: #eaeaea;
+    }
+
+    .product-info {
+      padding: 15px 10px 5px;
+    }
+
+    .product-info h3 {
+      margin: 10px 0 5px;
+      font-size: 1rem;
+      color: #111;
+      font-weight: normal;
+    }
+
+    .price {
+      font-size: 0.95rem;
+      font-weight: bold;
+      color: #444;
+    }
+
+    .buy-btn {
+      margin-top: 10px;
+      background-color: #0066cc;
+      color: white;
+      padding: 10px;
+      border: none;
+      border-radius: 5px;
+      font-size: 0.9rem;
+      cursor: pointer;
+      transition: background-color 0.3s ease;
+      width: 80%;
+    }
+
+    .buy-btn:hover {
+      background-color: #003366;
+    }
+
+    @media (min-width: 1400px) {
+      .products-grid {
+        grid-template-columns: repeat(5, 1fr);
+      }
+    }
+  </style>
+</head>
+<body>
+
+  <h2>منتجاتنا</h2>
+
+  {% if products %}
+    <div class="products-grid">
+      {% for product in products %}
+        <div class="product-card">
+          {% if product.image %}
+            <img src="{{ product.image.url }}" alt="{{ product.name }}">
+          {% else %}
+            <img src="{% static 'default-product.jpg' %}" alt="صورة افتراضية">
+          {% endif %}
+          <div class="product-info">
+            <h3>{{ product.name }}</h3>
+            <div class="price">{{ product.price }} ر.س</div>
+            <form method="post" action="{% url 'add_to_cart' %}">
+              {% csrf_token %}
+              <input type="hidden" name="product_id" value="{{ product.id }}">
+              <button type="submit" class="buy-btn">🛒 أضف إلى السلة</button>
+            </form>
+          </div>
+        </div>
+      {% endfor %}
+    </div>
+  {% else %}
+    <p style="text-align: center; margin-top: 60px;">لا توجد منتجات حالياً.</p>
+  {% endif %}
+
+</body>
+</html>
+
+{% include 'footer.html' %}
