@@ -16,3 +16,4 @@ urlpatterns = [
     path('verify-email/', verify_email_view, name='verify_email'),  # مسار التحقق من البريد
     path('check_availability/', check_availability, name='check_availability'),
 ]
+    
