@@ -1,4 +1,5 @@
 from django.db import models
+from cloudinary.models import CloudinaryField
 
 
 class Product(models.Model):
@@ -22,9 +23,8 @@ class Product(models.Model):
         verbose_name="السعر"
     )
 
-    # 🖼️ صورة المنتج
-    image = models.ImageField(
-        upload_to='products/',
+    # 🖼️ صورة المنتج (باستخدام CloudinaryField)
+    image = CloudinaryField(
         blank=True,
         null=True,
         verbose_name="صورة المنتج"

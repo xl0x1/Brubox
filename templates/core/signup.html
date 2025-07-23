@@ -1,0 +1,129 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+  <meta charset="UTF-8">
+  <title>إنشاء حساب جديد</title>
+  <style>
+    body {
+      font-family: 'Cairo', sans-serif;
+      background-color: #111;
+      color: #fff;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      height: 100vh;
+    }
+
+    .form-container {
+      background-color: #1e1e1e;
+      padding: 40px;
+      border-radius: 12px;
+      box-shadow: 0 0 20px rgba(0, 0, 0, 0.3);
+      width: 400px;
+    }
+
+    input {
+      width: 100%;
+      padding: 10px;
+      margin-top: 8px;
+      margin-bottom: 6px;
+      border-radius: 6px;
+      border: none;
+    }
+
+    label {
+      font-size: 0.9rem;
+      display: block;
+    }
+
+    .submit-btn {
+      background-color: #0066cc;
+      color: white;
+      border: none;
+      padding: 12px;
+      width: 100%;
+      font-size: 1rem;
+      cursor: pointer;
+      border-radius: 8px;
+      margin-top: 15px;
+    }
+
+    a {
+      color: #33aaff;
+    }
+
+    .availability {
+      font-size: 0.8rem;
+      height: 18px;
+      display: block;
+      margin-bottom: 10px;
+      text-align: right;
+    }
+
+    .row {
+      display: flex;
+      gap: 10px;
+    }
+
+    .row input {
+      flex: 1;
+    }
+  </style>
+</head>
+<body>
+  <div class="form-container">
+    <h2 style="text-align: center;">إنشاء حساب جديد</h2>
+    <form method="post">
+      {% csrf_token %}
+
+      <!-- اسم المستخدم -->
+      <label for="id_username">اسم المستخدم:</label>
+      <input type="text" name="username" id="id_username" onkeyup="checkAvailability('username', this.value)">
+      <span id="username_msg" class="availability"></span>
+
+      <!-- البريد الإلكتروني -->
+      <label for="id_email">البريد الإلكتروني:</label>
+      <input type="email" name="email" id="id_email" placeholder="example@email.com" onkeyup="checkAvailability('email', this.value)">
+      <span id="email_msg" class="availability"></span>
+
+      <!-- رقم الجوال -->
+      <label>رقم الجوال:</label>
+      <div class="row">
+        <input type="text" name="country_code" id="id_country_code" value="+966" style="width: 70px;">
+        <input type="text" name="phone_number" id="id_phone_number" placeholder="5xxxxxxxx" onkeyup="checkAvailability('phone_number', this.value)">
+      </div>
+      <span id="phone_number_msg" class="availability"></span>
+
+      <!-- كلمة المرور -->
+      <label for="id_password1">كلمة المرور:</label>
+      <input type="password" name="password1" id="id_password1">
+
+      <!-- تأكيد كلمة المرور -->
+      <label for="id_password2">تأكيد كلمة المرور:</label>
+      <input type="password" name="password2" id="id_password2">
+
+      <button type="submit" class="submit-btn">تسجيل</button>
+    </form>
+
+    <p style="text-align:center;">لديك حساب؟ <a href="{% url 'login' %}">تسجيل الدخول</a></p>
+  </div>
+
+  <!-- ✅ كود الجافاسكربت للتحقق اللحظي -->
+  <script>
+    function checkAvailability(field, value) {
+      if (value.trim() === '') return;
+
+      fetch(`/check_availability/?field=${field}&value=${encodeURIComponent(value)}`)
+        .then(response => response.json())
+        .then(data => {
+          const msg = document.getElementById(`${field}_msg`);
+          if (msg) {
+            msg.textContent = data.available ? '✅ متاح' : '❌ غير متاح';
+            msg.style.color = data.available ? 'limegreen' : 'crimson';
+          }
+        })
+        .catch(error => console.error('فشل التحقق:', error));
+    }
+  </script>
+</body>
+</html>

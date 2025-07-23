@@ -1,0 +1,76 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+  <meta charset="UTF-8">
+  <title>التحقق من البريد الإلكتروني</title>
+  <style>
+    body {
+      font-family: 'Cairo', sans-serif;
+      background-color: #111;
+      color: #fff;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      height: 100vh;
+      margin: 0;
+    }
+
+    .verify-box {
+      background-color: #1e1e1e;
+      padding: 30px;
+      border-radius: 12px;
+      box-shadow: 0 0 10px rgba(0,0,0,0.5);
+      width: 400px;
+      text-align: center;
+    }
+
+    input {
+      width: 100%;
+      padding: 10px;
+      margin-top: 10px;
+      margin-bottom: 20px;
+      border-radius: 8px;
+      border: none;
+      font-size: 1rem;
+    }
+
+    button {
+      background-color: #0066cc;
+      color: white;
+      border: none;
+      padding: 12px;
+      width: 100%;
+      font-size: 1rem;
+      border-radius: 8px;
+      cursor: pointer;
+    }
+
+    .messages {
+      margin-top: 15px;
+    }
+
+    .messages p {
+      color: red;
+      margin: 0;
+    }
+  </style>
+</head>
+<body>
+  <div class="verify-box">
+    <h2>أدخل رمز التحقق</h2>
+    <form method="POST">
+      {% csrf_token %}
+      <input type="text" name="code" placeholder="رمز التحقق المرسل إلى بريدك">
+      <button type="submit">تحقق</button>
+    </form>
+
+    <div class="messages">
+      {% if messages %}
+        {% for message in messages %}
+          <p>{{ message }}</p>
+        {% endfor %}
+      {% endif %}
+    </div>
+  </div>
+</body>
+</html>
