@@ -3,27 +3,31 @@ import os
 import cloudinary
 
 # -------------------------------------------------------------
+# المسار الأساسي
+# -------------------------------------------------------------
+BASE_DIR = Path(__file__).resolve().parent.parent
+
+# -------------------------------------------------------------
+# وضع التشغيل: إنتاج أم تطوير
+# -------------------------------------------------------------
+IS_PRODUCTION = os.getenv("DJANGO_PRODUCTION", "False") == "True"
+
+# -------------------------------------------------------------
+# مفاتيح الأمان
+# -------------------------------------------------------------
+SECRET_KEY = os.getenv("DJANGO_SECRET_KEY", "django-insecure-default-secret-key")
+DEBUG = not IS_PRODUCTION
+ALLOWED_HOSTS = ["127.0.0.1", "localhost"] if not IS_PRODUCTION else ["*"]
+
+# -------------------------------------------------------------
 # المستخدم المخصص
 # -------------------------------------------------------------
 AUTH_USER_MODEL = 'core.CustomUser'
 
 # -------------------------------------------------------------
-# المسار الأساسي للمشروع
-# -------------------------------------------------------------
-BASE_DIR = Path(__file__).resolve().parent.parent
-
-# -------------------------------------------------------------
-# مفاتيح الأمان
-# -------------------------------------------------------------
-SECRET_KEY = 'django-insecure-h&b+8%28wa#@3&*0w9o3*1wim8rl&h8b)n!(4@s(2sv&d_=$)^'
-DEBUG = True
-ALLOWED_HOSTS = ["127.0.0.1", "localhost"]
-
-# -------------------------------------------------------------
 # التطبيقات المثبتة
 # -------------------------------------------------------------
 INSTALLED_APPS = [
-    # Django Apps
     'django.contrib.admin',
     'django.contrib.auth',
     'django.contrib.contenttypes',
@@ -31,18 +35,18 @@ INSTALLED_APPS = [
     'django.contrib.messages',
     'django.contrib.staticfiles',
 
-    # Project Apps
+    # التطبيقات الخاصة
     'core',
     'products',
     'orders',
 
-    # Cloudinary for Media
+    # إدارة الوسائط Cloudinary
     'cloudinary_storage',
     'cloudinary',
 ]
 
 # -------------------------------------------------------------
-# الوسطاء (Middlewares)
+# الوسطاء
 # -------------------------------------------------------------
 MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',
@@ -80,12 +84,24 @@ WSGI_APPLICATION = 'BruBox.wsgi.application'
 # -------------------------------------------------------------
 # قاعدة البيانات
 # -------------------------------------------------------------
-DATABASES = {
-    'default': {
-        'ENGINE': 'django.db.backends.sqlite3',
-        'NAME': BASE_DIR / 'db.sqlite3',
+if IS_PRODUCTION:
+    DATABASES = {
+        'default': {
+            'ENGINE': 'django.db.backends.postgresql',
+            'NAME': os.getenv('DB_NAME'),
+            'USER': os.getenv('DB_USER'),
+            'PASSWORD': os.getenv('DB_PASSWORD'),
+            'HOST': os.getenv('DB_HOST'),
+            'PORT': os.getenv('DB_PORT', '5432'),
+        }
     }
-}
+else:
+    DATABASES = {
+        'default': {
+            'ENGINE': 'django.db.backends.sqlite3',
+            'NAME': BASE_DIR / 'db.sqlite3',
+        }
+    }
 
 # -------------------------------------------------------------
 # تحقق كلمات المرور
@@ -107,60 +123,51 @@ USE_L10N = True
 USE_TZ = True
 
 # -------------------------------------------------------------
-# الملفات الثابتة (Static Files)
+# الملفات الثابتة
 # -------------------------------------------------------------
 STATIC_URL = '/static/'
-
-# ✅ مجلد التجميع النهائي (يُستخدم عند التشغيل: python manage.py collectstatic)
 STATIC_ROOT = BASE_DIR / 'staticfiles'
-
-# ✅ مجلد التطوير - تضع فيه ملفات CSS/JS أثناء العمل
-STATICFILES_DIRS = [
-    BASE_DIR / 'static',
-]
+STATICFILES_DIRS = [BASE_DIR / 'static']
 
 # -------------------------------------------------------------
-# Cloudinary (وسائط media)
+# Cloudinary
 # -------------------------------------------------------------
 CLOUDINARY_STORAGE = {
-    'CLOUD_NAME': 'dc5vo8ik6',
-    'API_KEY': '876161638251177',
-    'API_SECRET': 'E4sTs38QsjdCrjJii5w3igSQkwI',
+    'CLOUD_NAME': os.getenv('CLOUD_NAME'),
+    'API_KEY': os.getenv('CLOUD_API_KEY'),
+    'API_SECRET': os.getenv('CLOUD_API_SECRET'),
 }
 DEFAULT_FILE_STORAGE = 'cloudinary_storage.storage.MediaCloudinaryStorage'
 
-# -------------------------------------------------------------
-# ملفات الوسائط (Media URL)
-# -------------------------------------------------------------
-MEDIA_URL = '/media/'
-
-# -------------------------------------------------------------
-# إعدادات البريد الإلكتروني (Gmail SMTP)
-# -------------------------------------------------------------
-EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
-EMAIL_HOST = 'smtp.gmail.com'
-EMAIL_PORT = 587
-EMAIL_USE_TLS = True
-EMAIL_HOST_USER = 'albaraasalamh@gmail.com'
-EMAIL_HOST_PASSWORD = 'lluv ypnn gqmv rmns'  # تأكد أنه "كلمة مرور تطبيق" وليس كلمة الحساب نفسه
-DEFAULT_FROM_EMAIL = EMAIL_HOST_USER
-
-# -------------------------------------------------------------
-# إعادة التوجيه بعد تسجيل الدخول / تسجيل الخروج
-# -------------------------------------------------------------
-LOGIN_REDIRECT_URL = '/'
-LOGOUT_REDIRECT_URL = '/accounts/login/'
-
-# -------------------------------------------------------------
-# الإعداد الافتراضي للحقول
-# -------------------------------------------------------------
-DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
-
-# -------------------------------------------------------------
-# تهيئة Cloudinary عند التشغيل
-# -------------------------------------------------------------
 cloudinary.config(
     cloud_name=CLOUDINARY_STORAGE['CLOUD_NAME'],
     api_key=CLOUDINARY_STORAGE['API_KEY'],
     api_secret=CLOUDINARY_STORAGE['API_SECRET']
 )
+
+# -------------------------------------------------------------
+# وسائط
+# -------------------------------------------------------------
+MEDIA_URL = '/media/'  # Cloudinary يتولى التخزين
+
+# -------------------------------------------------------------
+# البريد الإلكتروني
+# -------------------------------------------------------------
+EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
+EMAIL_HOST = 'smtp.gmail.com'
+EMAIL_PORT = 587
+EMAIL_USE_TLS = True
+EMAIL_HOST_USER = os.getenv('EMAIL_HOST_USER')
+EMAIL_HOST_PASSWORD = os.getenv('EMAIL_HOST_PASSWORD')
+DEFAULT_FROM_EMAIL = EMAIL_HOST_USER
+
+# -------------------------------------------------------------
+# إعادة التوجيه
+# -------------------------------------------------------------
+LOGIN_REDIRECT_URL = '/'
+LOGOUT_REDIRECT_URL = '/accounts/login/'
+
+# -------------------------------------------------------------
+# الحقول الافتراضية
+# -------------------------------------------------------------
+DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
