@@ -17,7 +17,12 @@ IS_PRODUCTION = os.getenv("DJANGO_PRODUCTION", "False") == "True"
 # -------------------------------------------------------------
 SECRET_KEY = os.getenv("DJANGO_SECRET_KEY", "django-insecure-default-secret-key")
 DEBUG = not IS_PRODUCTION
-ALLOWED_HOSTS = ["127.0.0.1", "localhost"] if not IS_PRODUCTION else ["brubox.onrender.com"]
+
+# ✅ إعداد ALLOWED_HOSTS من ملف .env
+if IS_PRODUCTION:
+    ALLOWED_HOSTS = os.getenv("DJANGO_ALLOWED_HOSTS_PROD", "brubox.onrender.com").split(",")
+else:
+    ALLOWED_HOSTS = os.getenv("DJANGO_ALLOWED_HOSTS", "127.0.0.1,localhost").split(",")
 
 # -------------------------------------------------------------
 # المستخدم المخصص
