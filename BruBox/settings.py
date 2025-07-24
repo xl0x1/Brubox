@@ -203,3 +203,6 @@ LOGGING = {
         },
     },
 }
+print("IS_PRODUCTION:", IS_PRODUCTION)
+print("DEBUG:", DEBUG)
+print("ALLOWED_HOSTS:", ALLOWED_HOSTS)
