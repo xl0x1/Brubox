@@ -1,6 +1,7 @@
 from pathlib import Path
 import os
 import cloudinary
+from django.core.exceptions import ImproperlyConfigured
 
 # -------------------------------------------------------------
 # المسار الأساسي
@@ -16,6 +17,10 @@ DEBUG = os.getenv("DEBUG", str(not IS_PRODUCTION)) == "True"
 # -------------------------------------------------------------
 # مفاتيح الأمان
 # -------------------------------------------------------------
+SECRET_KEY = os.getenv("DJANGO_SECRET_KEY")
+if not SECRET_KEY:
+    raise ImproperlyConfigured("The SECRET_KEY setting must not be empty.")
+
 ALLOWED_HOSTS = os.getenv(
     "DJANGO_ALLOWED_HOSTS_PROD" if IS_PRODUCTION else "DJANGO_ALLOWED_HOSTS",
     "brubox.onrender.com" if IS_PRODUCTION else "127.0.0.1,localhost"
@@ -139,6 +144,10 @@ CLOUDINARY_STORAGE = {
     'API_KEY': os.getenv('CLOUD_API_KEY'),
     'API_SECRET': os.getenv('CLOUD_API_SECRET'),
 }
+
+if not all(CLOUDINARY_STORAGE.values()):
+    raise ImproperlyConfigured("Missing one or more Cloudinary settings.")
+
 DEFAULT_FILE_STORAGE = 'cloudinary_storage.storage.MediaCloudinaryStorage'
 
 cloudinary.config(
