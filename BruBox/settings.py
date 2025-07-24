@@ -57,6 +57,10 @@ INSTALLED_APPS = [
 # -------------------------------------------------------------
 MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',
+
+    # ✅ WhiteNoise لتقديم static files في الإنتاج
+    'whitenoise.middleware.WhiteNoiseMiddleware',
+
     'django.contrib.sessions.middleware.SessionMiddleware',
     'django.middleware.common.CommonMiddleware',
     'django.middleware.csrf.CsrfViewMiddleware',
@@ -130,21 +134,23 @@ USE_L10N = True
 USE_TZ = True
 
 # -------------------------------------------------------------
-# الملفات الثابتة
+# الملفات الثابتة (Static files)
 # -------------------------------------------------------------
 STATIC_URL = '/static/'
 STATIC_ROOT = BASE_DIR / 'staticfiles'
 STATICFILES_DIRS = [BASE_DIR / 'static']
 
+# ✅ لتفعيل WhiteNoise وضغط الملفات
+STATICFILES_STORAGE = 'whitenoise.storage.CompressedManifestStaticFilesStorage'
+
 # -------------------------------------------------------------
-# Cloudinary
+# Cloudinary (الوسائط Media)
 # -------------------------------------------------------------
 CLOUDINARY_STORAGE = {
     'CLOUD_NAME': os.getenv('CLOUD_NAME'),
     'API_KEY': os.getenv('CLOUD_API_KEY'),
     'API_SECRET': os.getenv('CLOUD_API_SECRET'),
 }
-
 if not all(CLOUDINARY_STORAGE.values()):
     raise ImproperlyConfigured("Missing one or more Cloudinary settings.")
 
@@ -157,9 +163,9 @@ cloudinary.config(
 )
 
 # -------------------------------------------------------------
-# وسائط
+# وسائط إضافية (MEDIA_URL فقط للتوافق)
 # -------------------------------------------------------------
-MEDIA_URL = '/media/'  # Cloudinary يتولى التخزين
+MEDIA_URL = '/media/'
 
 # -------------------------------------------------------------
 # البريد الإلكتروني
@@ -173,17 +179,18 @@ EMAIL_HOST_PASSWORD = os.getenv('EMAIL_HOST_PASSWORD')
 DEFAULT_FROM_EMAIL = EMAIL_HOST_USER if EMAIL_HOST_USER else 'noreply@example.com'
 
 # -------------------------------------------------------------
-# إعادة التوجيه
+# إعادة التوجيه بعد الدخول والخروج
 # -------------------------------------------------------------
 LOGIN_REDIRECT_URL = '/'
 LOGOUT_REDIRECT_URL = '/accounts/login/'
 
 # -------------------------------------------------------------
-# الحقول الافتراضية
+# الحقول الافتراضية للنماذج
 # -------------------------------------------------------------
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
+
 # -------------------------------------------------------------
-# تسجيل الأخطاء في ملف log لعرضها بسهولة
+# تسجيل الأخطاء في ملف log
 # -------------------------------------------------------------
 LOGGING = {
     'version': 1,
@@ -203,6 +210,10 @@ LOGGING = {
         },
     },
 }
+
+# -------------------------------------------------------------
+# تصحيح أثناء التطوير
+# -------------------------------------------------------------
 print("IS_PRODUCTION:", IS_PRODUCTION)
 print("DEBUG:", DEBUG)
 print("ALLOWED_HOSTS:", ALLOWED_HOSTS)
