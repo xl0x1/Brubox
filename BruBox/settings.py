@@ -21,6 +21,7 @@ ALLOWED_HOSTS = os.getenv(
     "DJANGO_ALLOWED_HOSTS_PROD" if IS_PRODUCTION else "DJANGO_ALLOWED_HOSTS",
     "brubox.onrender.com" if IS_PRODUCTION else "127.0.0.1,localhost"
 ).split(",")
+
 # -------------------------------------------------------------
 # المستخدم المخصص
 # -------------------------------------------------------------
