@@ -8,18 +8,19 @@ import cloudinary
 BASE_DIR = Path(__file__).resolve().parent.parent
 
 # -------------------------------------------------------------
-# وضع التشغيل: إنتاج أم تطوير
+# وضع التشغيل
 # -------------------------------------------------------------
 IS_PRODUCTION = os.getenv("DJANGO_PRODUCTION", "False") == "True"
+DEBUG = os.getenv("DEBUG", str(not IS_PRODUCTION)) == "True"
 
 # -------------------------------------------------------------
 # مفاتيح الأمان
 # -------------------------------------------------------------
 SECRET_KEY = os.getenv("DJANGO_SECRET_KEY", "django-insecure-default-secret-key")
-DEBUG = not IS_PRODUCTION
-
-# ✅ إعداد ALLOWED_HOSTS من ملف .env
-ALLOWED_HOSTS = os.getenv("DJANGO_ALLOWED_HOSTS_PROD" if IS_PRODUCTION else "DJANGO_ALLOWED_HOSTS", "brubox.onrender.com" if IS_PRODUCTION else "127.0.0.1,localhost").split(",")
+ALLOWED_HOSTS = os.getenv(
+    "DJANGO_ALLOWED_HOSTS_PROD" if IS_PRODUCTION else "DJANGO_ALLOWED_HOSTS",
+    "brubox.onrender.com" if IS_PRODUCTION else "127.0.0.1,localhost"
+).split(",")
 
 # -------------------------------------------------------------
 # المستخدم المخصص
@@ -37,12 +38,12 @@ INSTALLED_APPS = [
     'django.contrib.messages',
     'django.contrib.staticfiles',
 
-    # التطبيقات الخاصة
+    # تطبيقات المشروع
     'core',
     'products',
     'orders',
 
-    # إدارة الوسائط Cloudinary
+    # إدارة الصور
     'cloudinary_storage',
     'cloudinary',
 ]
@@ -142,9 +143,9 @@ CLOUDINARY_STORAGE = {
 DEFAULT_FILE_STORAGE = 'cloudinary_storage.storage.MediaCloudinaryStorage'
 
 cloudinary.config(
-    cloud_name=CLOUDINARY_STORAGE['CLOUD_NAME'],
-    api_key=CLOUDINARY_STORAGE['API_KEY'],
-    api_secret=CLOUDINARY_STORAGE['API_SECRET']
+    cloud_name=CLOUDINARY_STORAGE.get('CLOUD_NAME'),
+    api_key=CLOUDINARY_STORAGE.get('API_KEY'),
+    api_secret=CLOUDINARY_STORAGE.get('API_SECRET')
 )
 
 # -------------------------------------------------------------
@@ -161,7 +162,7 @@ EMAIL_PORT = 587
 EMAIL_USE_TLS = True
 EMAIL_HOST_USER = os.getenv('EMAIL_HOST_USER')
 EMAIL_HOST_PASSWORD = os.getenv('EMAIL_HOST_PASSWORD')
-DEFAULT_FROM_EMAIL = EMAIL_HOST_USER
+DEFAULT_FROM_EMAIL = EMAIL_HOST_USER if EMAIL_HOST_USER else 'noreply@example.com'
 
 # -------------------------------------------------------------
 # إعادة التوجيه
