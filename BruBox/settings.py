@@ -137,10 +137,10 @@ USE_TZ = True
 # الملفات الثابتة (Static files)
 # -------------------------------------------------------------
 STATIC_URL = '/static/'
-STATIC_ROOT = BASE_DIR / 'staticfiles'
 STATICFILES_DIRS = [BASE_DIR / 'static']
+STATIC_ROOT = BASE_DIR / 'staticfiles'
 
-# ✅ لتفعيل WhiteNoise وضغط الملفات
+# ✅ تفعيل WhiteNoise لتقديم static files وضغطها
 STATICFILES_STORAGE = 'whitenoise.storage.CompressedManifestStaticFilesStorage'
 
 # -------------------------------------------------------------
