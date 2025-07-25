@@ -2,6 +2,8 @@ from pathlib import Path
 import os
 import cloudinary
 from django.core.exceptions import ImproperlyConfigured
+from dotenv import load_dotenv
+load_dotenv()
 
 # -------------------------------------------------------------
 # المسار الأساسي
@@ -42,12 +44,10 @@ INSTALLED_APPS = [
     'django.contrib.messages',
     'django.contrib.staticfiles',
 
-    # تطبيقات المشروع
     'core',
     'products',
     'orders',
 
-    # إدارة الصور
     'cloudinary_storage',
     'cloudinary',
 ]
@@ -57,10 +57,7 @@ INSTALLED_APPS = [
 # -------------------------------------------------------------
 MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',
-
-    # ✅ WhiteNoise لتقديم static files في الإنتاج
     'whitenoise.middleware.WhiteNoiseMiddleware',
-
     'django.contrib.sessions.middleware.SessionMiddleware',
     'django.middleware.common.CommonMiddleware',
     'django.middleware.csrf.CsrfViewMiddleware',
@@ -140,7 +137,6 @@ STATIC_URL = '/static/'
 STATICFILES_DIRS = [BASE_DIR / 'static']
 STATIC_ROOT = BASE_DIR / 'staticfiles'
 
-# ✅ تفعيل WhiteNoise لتقديم static files وضغطها
 STATICFILES_STORAGE = 'whitenoise.storage.CompressedManifestStaticFilesStorage'
 
 # -------------------------------------------------------------
@@ -163,7 +159,7 @@ cloudinary.config(
 )
 
 # -------------------------------------------------------------
-# وسائط إضافية (MEDIA_URL فقط للتوافق)
+# وسائط إضافية
 # -------------------------------------------------------------
 MEDIA_URL = '/media/'
 
