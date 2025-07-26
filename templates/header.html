@@ -1,10 +1,10 @@
 {% load static %}
 
-<header style="background-color: #e9ddcc; color: white; font-family: 'Cairo', sans-serif; position: sticky; top: 0; z-index: 999;">
-  <div style="position: relative; padding: 15px 30px; display: flex; align-items: center; justify-content: space-between; flex-wrap: wrap; direction: rtl;">
+<header style="background-color: #e9ddcc; font-family: 'Cairo', sans-serif; position: sticky; top: 0; z-index: 999;">
+  <div style="display: flex; justify-content: space-between; align-items: center; padding: 20px 40px; direction: rtl; flex-wrap: wrap;">
 
-    <!-- ✅ روابط الأقسام (أقصى اليمين) -->
-    <nav style="display: flex; gap: 30px; font-size: 1rem; flex-wrap: wrap;">
+    <!-- ✅ روابط الأقسام (يمين) -->
+    <nav style="display: flex; gap: 30px; font-size: 1rem;">
       <a href="/" style="color: #000; text-decoration: none;">الرئيسية</a>
       <a href="/#محاصيل" style="color: #000; text-decoration: none;">المحاصيل</a>
       <a href="/products/" style="color: #000; text-decoration: none;">أدوات القهوة المقطرة</a>
@@ -12,13 +12,15 @@
       <a href="#" style="color: #000; text-decoration: none;">الإكسسوارات</a>
     </nav>
 
-    <!-- ✅ الشعار (في المنتصف تماماً) -->
-    <a href="/" style="position: absolute; left: 50%; transform: translateX(-50%); display: flex; align-items: center; gap: 10px; text-decoration: none;">
-      <img src="{% static 'images/Brubox.png' %}" alt="BrüBox Logo" style="height: 42px;">
-    </a>
+    <!-- ✅ الشعار (في المنتصف) -->
+    <div style="flex: 1; text-align: center;">
+      <a href="/" style="display: inline-block;">
+        <img src="{% static 'image/Bx.png' %}" alt="BrüBox Logo" style="height: 70px;">
+      </a>
+    </div>
 
-    <!-- ✅ أيقونات الحساب والبحث والسلة (أقصى اليسار) -->
-    <div style="display: flex; gap: 15px; align-items: center;">
+    <!-- ✅ أيقونات الحساب والبحث والسلة (يسار) -->
+    <div style="display: flex; gap: 20px; align-items: center;">
 
       <!-- الحساب -->
       <div class="user-dropdown" style="position: relative;">
@@ -28,18 +30,7 @@
             <path d="M6 20c0-3.3 2.7-6 6-6s6 2.7 6 6"/>
           </svg>
         </div>
-        <div id="userDropdown" style="
-          display: none;
-          position: absolute;
-          top: 36px;
-          right: 0;
-          background-color: #151515;
-          padding: 10px;
-          border-radius: 6px;
-          width: 160px;
-          box-shadow: 0 4px 10px rgba(0, 0, 0, 0.3);
-          z-index: 1000;
-        ">
+        <div id="userDropdown" style="display: none; position: absolute; top: 36px; right: 0; background-color: #151515; padding: 10px; border-radius: 6px; width: 160px; box-shadow: 0 4px 10px rgba(0, 0, 0, 0.3); z-index: 1000;">
           <a href="/accounts/login/" style="display: block; color: white; padding: 8px 12px; text-decoration: none; border-bottom: 1px solid #444;">تسجيل الدخول</a>
           <a href="/accounts/signup/" style="display: block; color: white; padding: 8px 12px; text-decoration: none;">إنشاء حساب</a>
         </div>
@@ -69,12 +60,12 @@
   <!-- ✅ شريط الصيانة -->
   <div style="background-color: #0d2641; color: white; white-space: nowrap; overflow: hidden;">
     <marquee direction="right" scrollamount="4" style="padding: 8px 0;">
-      🚧 الموقع تحت الصيانة حاليًا 🚧 🚧 الموقع تحت الصيانة حاليًا 🚧 🚧 الموقع تحت الصيانة حاليًا 🚧 🚧 الموقع تحت الصيانة حاليًا
+      🚧 الموقع تحت الصيانة حاليًا 🚧 الموقع تحت الصيانة حاليًا 🚧 الموقع تحت الصيانة حاليًا 🚧 الموقع تحت الصيانة حاليًا 🚧
     </marquee>
   </div>
 </header>
 
-<!-- ✅ JavaScript لإظهار/إخفاء القائمة -->
+<!-- ✅ JavaScript لقائمة الحساب -->
 <script>
   function toggleDropdown() {
     const dropdown = document.getElementById('userDropdown');
