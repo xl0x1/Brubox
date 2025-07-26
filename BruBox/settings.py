@@ -1,6 +1,7 @@
 from pathlib import Path
 import os
 import cloudinary
+import dj_database_url
 from django.core.exceptions import ImproperlyConfigured
 
 # -------------------------------------------------------------
@@ -64,7 +65,7 @@ INSTALLED_APPS = [
 # -------------------------------------------------------------
 MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',
-    'whitenoise.middleware.WhiteNoiseMiddleware',  # لتقديم static files في الإنتاج
+    'whitenoise.middleware.WhiteNoiseMiddleware',
     'django.contrib.sessions.middleware.SessionMiddleware',
     'django.middleware.common.CommonMiddleware',
     'django.middleware.csrf.CsrfViewMiddleware',
@@ -94,32 +95,32 @@ TEMPLATES = [
     },
 ]
 
-# -------------------------------------------------------------
-# تطبيق WSGI
-# -------------------------------------------------------------
 WSGI_APPLICATION = 'BruBox.wsgi.application'
 
 # -------------------------------------------------------------
 # قاعدة البيانات
 # -------------------------------------------------------------
 if IS_PRODUCTION:
+    if not os.getenv("DATABASE_URL"):
+        raise ImproperlyConfigured("DATABASE_URL is not set in production mode.")
     DATABASES = {
-        'default': {
-            'ENGINE': 'django.db.backends.postgresql',
-            'NAME': os.getenv('DB_NAME'),
-            'USER': os.getenv('DB_USER'),
-            'PASSWORD': os.getenv('DB_PASSWORD'),
-            'HOST': os.getenv('DB_HOST'),
-            'PORT': os.getenv('DB_PORT', '5432'),
-        }
+        'default': dj_database_url.config(
+            default=os.getenv("DATABASE_URL"),
+            conn_max_age=600,
+            ssl_require=True
+        )
     }
 else:
     DATABASES = {
-        'default': {
-            'ENGINE': 'django.db.backends.sqlite3',
-            'NAME': BASE_DIR / 'db.sqlite3',
-        }
+    'default': {
+        'ENGINE': 'django.db.backends.postgresql',
+        'NAME': os.getenv("DB_NAME"),
+        'USER': os.getenv("DB_USER"),
+        'PASSWORD': os.getenv("DB_PASSWORD"),
+        'HOST': os.getenv("DB_HOST"),
+        'PORT': os.getenv("DB_PORT", '5432'),
     }
+}
 
 # -------------------------------------------------------------
 # تحقق كلمات المرور
@@ -141,7 +142,7 @@ USE_L10N = True
 USE_TZ = True
 
 # -------------------------------------------------------------
-# الملفات الثابتة (Static files)
+# الملفات الثابتة
 # -------------------------------------------------------------
 STATIC_URL = '/static/'
 STATICFILES_DIRS = [BASE_DIR / 'static']
@@ -149,7 +150,7 @@ STATIC_ROOT = BASE_DIR / 'staticfiles'
 STATICFILES_STORAGE = 'whitenoise.storage.CompressedManifestStaticFilesStorage'
 
 # -------------------------------------------------------------
-# Cloudinary (الوسائط Media)
+# Cloudinary (الوسائط)
 # -------------------------------------------------------------
 CLOUDINARY_STORAGE = {
     'CLOUD_NAME': os.getenv('CLOUD_NAME'),
@@ -192,7 +193,7 @@ LOGOUT_REDIRECT_URL = '/accounts/login/'
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 
 # -------------------------------------------------------------
-# تسجيل الأخطاء في ملف log
+# تسجيل الأخطاء في ملف
 # -------------------------------------------------------------
 LOGGING = {
     'version': 1,
@@ -214,7 +215,7 @@ LOGGING = {
 }
 
 # -------------------------------------------------------------
-# طباعة وضع النظام أثناء التطوير
+# طباعة وضع التشغيل
 # -------------------------------------------------------------
 print("IS_PRODUCTION:", IS_PRODUCTION)
 print("DEBUG:", DEBUG)
