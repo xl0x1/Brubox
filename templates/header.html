@@ -1,14 +1,9 @@
 {% load static %}
 
 <header style="background-color: #e9ddcc; color: white; font-family: 'Cairo', sans-serif; position: sticky; top: 0; z-index: 999;">
-  <div style="display: flex; justify-content: space-between; align-items: center; padding: 15px 30px; flex-wrap: wrap; direction: rtl;">
+  <div style="position: relative; padding: 15px 30px; display: flex; align-items: center; justify-content: space-between; flex-wrap: wrap; direction: rtl;">
 
-    <!-- ✅ الشعار (أقصى اليمين) -->
-    <a href="/" style="display: flex; align-items: center; gap: 10px; text-decoration: none;">
-      <img src="{% static 'images/Brubox.png' %}" alt="BrüBox Logo" style="height: 42px;">
-    </a>
-
-    <!-- ✅ روابط الأقسام -->
+    <!-- ✅ روابط الأقسام (أقصى اليمين) -->
     <nav style="display: flex; gap: 30px; font-size: 1rem; flex-wrap: wrap;">
       <a href="/" style="color: #000; text-decoration: none;">الرئيسية</a>
       <a href="/#محاصيل" style="color: #000; text-decoration: none;">المحاصيل</a>
@@ -17,9 +12,14 @@
       <a href="#" style="color: #000; text-decoration: none;">الإكسسوارات</a>
     </nav>
 
-    <!-- ✅ أيقونات الحساب والبحث والسلة -->
+    <!-- ✅ الشعار (في المنتصف تماماً) -->
+    <a href="/" style="position: absolute; left: 50%; transform: translateX(-50%); display: flex; align-items: center; gap: 10px; text-decoration: none;">
+      <img src="{% static 'images/Brubox.png' %}" alt="BrüBox Logo" style="height: 42px;">
+    </a>
+
+    <!-- ✅ أيقونات الحساب والبحث والسلة (أقصى اليسار) -->
     <div style="display: flex; gap: 15px; align-items: center;">
-      
+
       <!-- الحساب -->
       <div class="user-dropdown" style="position: relative;">
         <div style="cursor: pointer;" onclick="toggleDropdown()">
