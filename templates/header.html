@@ -1,7 +1,7 @@
 {% load static %}
 
 <header style="background-color: #e9ddcc; font-family: 'Cairo', sans-serif; position: sticky; top: 0; z-index: 999;">
-  <div style="display: flex; justify-content: space-between; align-items: center; padding: 20px 40px; direction: rtl; flex-wrap: wrap;">
+  <div style="display: flex; justify-content: space-between; align-items: center; padding: 20px 40px; direction: rtl; flex-wrap: wrap; position: relative;">
 
     <!-- ✅ روابط الأقسام (يمين) -->
     <nav style="display: flex; gap: 30px; font-size: 1rem;">
@@ -12,13 +12,18 @@
       <a href="#" style="color: #000; text-decoration: none;">الإكسسوارات</a>
     </nav>
 
-    <!-- ✅ الشعار (في المنتصف) -->
-    <div style="flex: 1; text-align: center;">
-      <a href="/" style="position: absolute; left: 50%; transform: translateX(-50%); display: flex; align-items: center; text-decoration: none;">
-        <img src="{% static 'image/Bx.png' %}" alt="BrüBox Logo" style="height: 80px;">
-      </a>         
-      </a>
-    </div>
+    <!-- ✅ الشعار (في المنتصف ومرفوع لأعلى) -->
+    <a href="/" style="
+      position: absolute;
+      left: 50%;
+      top: 5px;
+      transform: translateX(-50%);
+      display: flex;
+      align-items: flex-start;
+      text-decoration: none;
+    ">
+      <img src="{% static 'image/Bx.png' %}" alt="BrüBox Logo" style="height: 80px;">
+    </a>
 
     <!-- ✅ أيقونات الحساب والبحث والسلة (يسار) -->
     <div style="display: flex; gap: 20px; align-items: center;">
@@ -80,4 +85,3 @@
     }
   });
 </script>
-<
