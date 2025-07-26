@@ -20,7 +20,7 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 # وضع التشغيل
 # -------------------------------------------------------------
 IS_PRODUCTION = os.getenv("DJANGO_PRODUCTION", "False") == "True"
-DEBUG = os.getenv("DEBUG", str(not IS_PRODUCTION)) == "True"
+DEBUG = os.getenv("DEBUG", "False").lower() == "true"
 
 # -------------------------------------------------------------
 # مفاتيح الأمان
@@ -65,7 +65,7 @@ INSTALLED_APPS = [
 # -------------------------------------------------------------
 MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',
-    'whitenoise.middleware.WhiteNoiseMiddleware',  # ✅ مهم للملفات الثابتة
+    'whitenoise.middleware.WhiteNoiseMiddleware',
     'django.contrib.sessions.middleware.SessionMiddleware',
     'django.middleware.common.CommonMiddleware',
     'django.middleware.csrf.CsrfViewMiddleware',
@@ -144,7 +144,7 @@ USE_TZ = True
 STATIC_URL = '/static/'
 STATICFILES_DIRS = [BASE_DIR / 'static']
 STATIC_ROOT = BASE_DIR / 'staticfiles'
-STATICFILES_STORAGE = 'whitenoise.storage.CompressedManifestStaticFilesStorage'  # ✅ تفعيل WhiteNoise
+STATICFILES_STORAGE = 'whitenoise.storage.CompressedManifestStaticFilesStorage'
 
 # -------------------------------------------------------------
 # Cloudinary (الوسائط)
@@ -159,19 +159,16 @@ if not all(CLOUDINARY_STORAGE.values()):
 
 DEFAULT_FILE_STORAGE = 'cloudinary_storage.storage.MediaCloudinaryStorage'
 
-import os
-
 cloudinary.config(
     cloud_name=os.getenv('CLOUD_NAME'),
     api_key=os.getenv('CLOUD_API_KEY'),
     api_secret=os.getenv('CLOUD_API_SECRET')
 )
 
-
 MEDIA_URL = '/media/'
 
 # -------------------------------------------------------------
-# البريد الإلكتروني
+# إعدادات البريد الإلكتروني
 # -------------------------------------------------------------
 EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
 EMAIL_HOST = 'smtp.gmail.com'
@@ -179,7 +176,7 @@ EMAIL_PORT = 587
 EMAIL_USE_TLS = True
 EMAIL_HOST_USER = os.getenv('EMAIL_HOST_USER')
 EMAIL_HOST_PASSWORD = os.getenv('EMAIL_HOST_PASSWORD')
-DEFAULT_FROM_EMAIL = EMAIL_HOST_USER if EMAIL_HOST_USER else 'noreply@example.com'
+DEFAULT_FROM_EMAIL = EMAIL_HOST_USER or 'noreply@example.com'
 
 # -------------------------------------------------------------
 # إعادة التوجيه بعد الدخول والخروج
@@ -215,7 +212,7 @@ LOGGING = {
 }
 
 # -------------------------------------------------------------
-# طباعة وضع التشغيل
+# طباعة وضع التشغيل (للتصحيح فقط)
 # -------------------------------------------------------------
 print("IS_PRODUCTION:", IS_PRODUCTION)
 print("DEBUG:", DEBUG)
