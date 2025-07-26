@@ -49,3 +49,9 @@ class Product(models.Model):
 
     def __str__(self):
         return self.name
+
+    # ✅ دالة تعرض السعر مع رمز الريال
+    def formatted_price(self):
+        return f'<span class="icon-saudi_riyal"></span> {self.price}'
+    formatted_price.allow_tags = True  # للسماح باستخدام HTML في الإدارة
+    formatted_price.short_description = "السعر بالعملة"
