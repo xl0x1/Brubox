@@ -65,7 +65,7 @@ INSTALLED_APPS = [
 # -------------------------------------------------------------
 MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',
-    'whitenoise.middleware.WhiteNoiseMiddleware',
+    'whitenoise.middleware.WhiteNoiseMiddleware',  # ✅ مهم للملفات الثابتة
     'django.contrib.sessions.middleware.SessionMiddleware',
     'django.middleware.common.CommonMiddleware',
     'django.middleware.csrf.CsrfViewMiddleware',
@@ -101,26 +101,23 @@ WSGI_APPLICATION = 'BruBox.wsgi.application'
 # قاعدة البيانات
 # -------------------------------------------------------------
 if IS_PRODUCTION:
-    if not os.getenv("DATABASE_URL"):
+    DATABASE_URL = os.getenv("DATABASE_URL")
+    if not DATABASE_URL:
         raise ImproperlyConfigured("DATABASE_URL is not set in production mode.")
     DATABASES = {
-        'default': dj_database_url.config(
-            default=os.getenv("DATABASE_URL"),
-            conn_max_age=600,
-            ssl_require=True
-        )
+        'default': dj_database_url.parse(DATABASE_URL, conn_max_age=600, ssl_require=True)
     }
 else:
     DATABASES = {
-    'default': {
-        'ENGINE': 'django.db.backends.postgresql',
-        'NAME': os.getenv("DB_NAME"),
-        'USER': os.getenv("DB_USER"),
-        'PASSWORD': os.getenv("DB_PASSWORD"),
-        'HOST': os.getenv("DB_HOST"),
-        'PORT': os.getenv("DB_PORT", '5432'),
+        'default': {
+            'ENGINE': 'django.db.backends.postgresql',
+            'NAME': os.getenv("DB_NAME"),
+            'USER': os.getenv("DB_USER"),
+            'PASSWORD': os.getenv("DB_PASSWORD"),
+            'HOST': os.getenv("DB_HOST"),
+            'PORT': os.getenv("DB_PORT", '5432'),
+        }
     }
-}
 
 # -------------------------------------------------------------
 # تحقق كلمات المرور
@@ -147,7 +144,7 @@ USE_TZ = True
 STATIC_URL = '/static/'
 STATICFILES_DIRS = [BASE_DIR / 'static']
 STATIC_ROOT = BASE_DIR / 'staticfiles'
-STATICFILES_STORAGE = 'whitenoise.storage.CompressedManifestStaticFilesStorage'
+STATICFILES_STORAGE = 'whitenoise.storage.CompressedManifestStaticFilesStorage'  # ✅ تفعيل WhiteNoise
 
 # -------------------------------------------------------------
 # Cloudinary (الوسائط)
