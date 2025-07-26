@@ -2,8 +2,13 @@ from pathlib import Path
 import os
 import cloudinary
 from django.core.exceptions import ImproperlyConfigured
-from dotenv import load_dotenv
-load_dotenv()
+
+# -------------------------------------------------------------
+# تحميل متغيرات البيئة من .env في التطوير فقط
+# -------------------------------------------------------------
+if os.getenv("DJANGO_PRODUCTION", "False") != "True":
+    from dotenv import load_dotenv
+    load_dotenv()
 
 # -------------------------------------------------------------
 # المسار الأساسي
@@ -44,10 +49,12 @@ INSTALLED_APPS = [
     'django.contrib.messages',
     'django.contrib.staticfiles',
 
+    # تطبيقات المشروع
     'core',
     'products',
     'orders',
 
+    # إدارة الصور
     'cloudinary_storage',
     'cloudinary',
 ]
@@ -57,7 +64,7 @@ INSTALLED_APPS = [
 # -------------------------------------------------------------
 MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',
-    'whitenoise.middleware.WhiteNoiseMiddleware',
+    'whitenoise.middleware.WhiteNoiseMiddleware',  # لتقديم static files في الإنتاج
     'django.contrib.sessions.middleware.SessionMiddleware',
     'django.middleware.common.CommonMiddleware',
     'django.middleware.csrf.CsrfViewMiddleware',
@@ -87,6 +94,9 @@ TEMPLATES = [
     },
 ]
 
+# -------------------------------------------------------------
+# تطبيق WSGI
+# -------------------------------------------------------------
 WSGI_APPLICATION = 'BruBox.wsgi.application'
 
 # -------------------------------------------------------------
@@ -136,7 +146,6 @@ USE_TZ = True
 STATIC_URL = '/static/'
 STATICFILES_DIRS = [BASE_DIR / 'static']
 STATIC_ROOT = BASE_DIR / 'staticfiles'
-
 STATICFILES_STORAGE = 'whitenoise.storage.CompressedManifestStaticFilesStorage'
 
 # -------------------------------------------------------------
@@ -158,9 +167,6 @@ cloudinary.config(
     api_secret=CLOUDINARY_STORAGE.get('API_SECRET')
 )
 
-# -------------------------------------------------------------
-# وسائط إضافية
-# -------------------------------------------------------------
 MEDIA_URL = '/media/'
 
 # -------------------------------------------------------------
@@ -208,7 +214,7 @@ LOGGING = {
 }
 
 # -------------------------------------------------------------
-# تصحيح أثناء التطوير
+# طباعة وضع النظام أثناء التطوير
 # -------------------------------------------------------------
 print("IS_PRODUCTION:", IS_PRODUCTION)
 print("DEBUG:", DEBUG)
