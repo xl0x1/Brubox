@@ -159,11 +159,14 @@ if not all(CLOUDINARY_STORAGE.values()):
 
 DEFAULT_FILE_STORAGE = 'cloudinary_storage.storage.MediaCloudinaryStorage'
 
+import os
+
 cloudinary.config(
-    cloud_name=CLOUDINARY_STORAGE.get('CLOUD_NAME'),
-    api_key=CLOUDINARY_STORAGE.get('API_KEY'),
-    api_secret=CLOUDINARY_STORAGE.get('API_SECRET')
+    cloud_name=os.getenv('CLOUD_NAME'),
+    api_key=os.getenv('CLOUD_API_KEY'),
+    api_secret=os.getenv('CLOUD_API_SECRET')
 )
+
 
 MEDIA_URL = '/media/'
 
