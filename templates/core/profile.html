@@ -1,0 +1,71 @@
+<!-- profile.html -->
+{% load static %}
+<link rel="stylesheet" href="{% static 'css/profile.css' %}">
+
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+  <meta charset="UTF-8">
+  <title>حسابي</title>
+  <link rel="stylesheet" href="{% static 'css/profile.css' %}">
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Cairo&display=swap">
+</head>
+<body>
+
+<!-- القائمة الجانبية -->
+<div class="sidebar">
+  <div class="avatar">
+    <img src="{% static 'img/user.png' %}" alt="الصورة الشخصية">
+  </div>
+  <ul class="menu">
+    <li><i class="icon">🔔</i> الإشعارات</li>
+    <li><i class="icon">📦</i> الطلبات</li>
+    <li><i class="icon">🛒</i> طلبات بانتظار الدفع</li>
+    <li><i class="icon">⭐</i> الأمنيات</li>
+    <li><i class="icon">👤</i> حسابي</li>
+    <li><i class="icon">🎁</i> نقاط الولاء</li>
+    <li class="logout"><i class="icon">🚪</i> تسجيل الخروج</li>
+  </ul>
+</div>
+
+<!-- نموذج تعديل البيانات -->
+<div class="content">
+  <form method="post">
+    {% csrf_token %}
+    <div class="form-row">
+      <label>الاسم الأول</label>
+      <input type="text" name="first_name">
+      <label>الاسم الأخير</label>
+      <input type="text" name="last_name">
+    </div>
+    <div class="form-row">
+      <label>تاريخ الميلاد</label>
+      <input type="date" name="birthdate">
+      <label>الجنس</label>
+      <select name="gender">
+        <option value="male">ذكر</option>
+        <option value="female">أنثى</option>
+      </select>
+    </div>
+    <div class="form-row">
+      <label>رقم الجوال</label>
+      <input type="tel" name="phone">
+      <label>البريد الإلكتروني</label>
+      <input type="email" name="email">
+    </div>
+    <button type="submit" class="save-btn">حفظ</button>
+  </form>
+
+  <div class="settings">
+    <div class="toggle">
+      <label>الرسائل الترويجية</label>
+      <input type="checkbox" checked>
+    </div>
+    <div class="disable-account">
+      <button class="disable-btn">تعطيل الحساب</button>
+    </div>
+  </div>
+</div>
+
+</body>
+</html>
