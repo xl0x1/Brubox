@@ -23,6 +23,11 @@ class CustomUserManager(BaseUserManager):
 class CustomUser(AbstractBaseUser, PermissionsMixin):
     email = models.EmailField(unique=True, verbose_name="البريد الإلكتروني")
     username = models.CharField(max_length=150, unique=True, verbose_name="اسم المستخدم", default="user_temp")
+    
+    # ✅ الحقول المطلوبة لحل الخطأ
+    first_name = models.CharField(max_length=150, blank=True, verbose_name="الاسم الأول")
+    last_name = models.CharField(max_length=150, blank=True, verbose_name="الاسم الأخير")
+
     country_code = models.CharField(
         max_length=5,
         default='+966',
