@@ -6,8 +6,10 @@ from django.conf import settings
 from django.contrib import messages
 from django.http import JsonResponse
 from django.contrib.auth import get_user_model
+from django.contrib.auth.decorators import login_required
+
 from products.models import Product
-from .forms import EmailAuthenticationForm, CustomUserCreationForm
+from .forms import EmailAuthenticationForm, CustomUserCreationForm, UserProfileForm  # ✅ أضف النموذج
 
 User = get_user_model()
 
@@ -107,3 +109,18 @@ def check_availability(request):
 
     exists = User.objects.filter(**{field: value}).exists()
     return JsonResponse({'available': not exists})
+
+
+# ✅ عرض وتعديل صفحة الحساب الشخصي
+@login_required
+def profile_view(request):
+    if request.method == 'POST':
+        form = UserProfileForm(request.POST, instance=request.user)
+        if form.is_valid():
+            form.save()
+            messages.success(request, 'تم تحديث البيانات بنجاح.')
+            return redirect('profile')
+    else:
+        form = UserProfileForm(instance=request.user)
+
+    return render(request, 'core/profile.html', {'form': form})

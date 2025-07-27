@@ -50,3 +50,17 @@ class CustomUserCreationForm(UserCreationForm):
         if commit:
             user.save()
         return user
+
+
+# ✅ نموذج تعديل بيانات المستخدم (الملف الشخصي)
+class UserProfileForm(forms.ModelForm):
+    class Meta:
+        model = User
+        fields = ['first_name', 'last_name', 'email', 'country_code', 'phone_number']
+        widgets = {
+            'first_name': forms.TextInput(attrs={'placeholder': 'الاسم الأول'}),
+            'last_name': forms.TextInput(attrs={'placeholder': 'الاسم الأخير'}),
+            'email': forms.EmailInput(attrs={'placeholder': 'example@email.com'}),
+            'country_code': forms.TextInput(attrs={'placeholder': '+966'}),
+            'phone_number': forms.TextInput(attrs={'placeholder': '5xxxxxxxx'}),
+        }

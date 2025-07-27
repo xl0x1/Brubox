@@ -5,7 +5,8 @@ from .views import (
     login_view,
     about_view,
     check_availability,
-    verify_email_view,  # تأكد أنك أضفت هذا
+    verify_email_view,
+    profile_view,  # ✅ استيراد صفحة الحساب
 )
 
 urlpatterns = [
@@ -13,7 +14,7 @@ urlpatterns = [
     path('signup/', signup_view, name='signup'),
     path('login/', login_view, name='login'),
     path('about/', about_view, name='about'),
-    path('verify-email/', verify_email_view, name='verify_email'),  # مسار التحقق من البريد
+    path('verify-email/', verify_email_view, name='verify_email'),
     path('check_availability/', check_availability, name='check_availability'),
+    path('profile/', profile_view, name='profile'),  # ✅ مسار صفحة حسابي
 ]
-    
